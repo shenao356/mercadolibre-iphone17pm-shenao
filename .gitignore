@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+venv/
+.ipynb_checkpoints/
+~$*.docx
+*.tmp
+build_*.py
+convert_*.ps1
+S30*.pdf
+S35*.pdf
+*.docx
+*.pdf
