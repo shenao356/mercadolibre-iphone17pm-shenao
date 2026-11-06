@@ -1,0 +1,111 @@
+name: Pipeline CI-CD Mercado Libre iPhone 17 Pro Max
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  # ===========================================================================
+  # ETAPA 1: REVISION DE CODIGO Y SINTAXIS
+  # ===========================================================================
+  revision-codigo:
+    name: "1. Revision de Codigo y Dependencias"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar codigo del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.12 en la nube
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Instalar librerias necesarias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Validar sintaxis de los scripts de Python
+        run: |
+          python -m py_compile scraper_mercadolibre.py deploy_dashboard.py tests/test_scraper.py
+
+  # ===========================================================================
+  # ETAPA 2: PRUEBAS AUTOMATICAS Y EXTRACCION DE DATOS
+  # ===========================================================================
+  pruebas-automaticas:
+    name: "2. Pruebas Unitarias y Validacion de Datos"
+    needs: revision-codigo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar codigo del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.12 en la nube
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Instalar librerias necesarias
+        run: pip install -r requirements.txt
+
+      - name: Ejecutar pruebas unitarias automaticas
+        run: |
+          python -m unittest discover -s tests -v
+
+      - name: Ejecutar script de scraping y generar datos
+        run: |
+          python scraper_mercadolibre.py
+
+      - name: Guardar archivos CSV y JSON generados
+        uses: actions/upload-artifact@v4
+        with:
+          name: datos-iphone17-mercadolibre
+          path: |
+            iphone_17_pro_max_mercadolibre.csv
+            iphone_17_pro_max_mercadolibre.json
+          retention-days: 30
+
+  # ===========================================================================
+  # ETAPA 3: DESPLIEGUE CONTINUO DEL REPORTE WEB
+  # ===========================================================================
+  despliegue-continuo:
+    name: "3. Despliegue Continuo del Tablero Web"
+    needs: pruebas-automaticas
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar codigo del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.12 en la nube
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Instalar librerias necesarias
+        run: pip install -r requirements.txt
+
+      - name: Construir tablero web HTML y API JSON
+        run: |
+          python deploy_dashboard.py
+
+      - name: Publicar sitio web desplegado como artefacto de produccion
+        uses: actions/upload-artifact@v4
+        with:
+          name: sitio-web-reporte-iphone17
+          path: |
+            docs/index.html
+            docs/api/iphone17_data.json
+          retention-days: 30
