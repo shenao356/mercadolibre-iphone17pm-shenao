@@ -2,332 +2,829 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width. initial-scale=1.0">
-    <title>Dashboard CI/CD | iPhone 17 Pro Max - Mercado Libre Colombia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablero de Precios | iPhone 17 Pro Max - Mercado Libre</title>
     <style>
-        :root {
-            --primary: #0f2c59;
-            --secondary: #1e56a0;
-            --accent: #00a650;
-            --bg: #f4f7fa;
-            --card: #ffffff;
-            --text: #1f2937;
+        * {
+            box-sizing: border-box;
         }
         body {
-            font-family: 'Segoe UI'. Roboto. Helvetica. Arial. sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #e2e8f0;
+            color: #0f172a;
             margin: 0;
             padding: 0;
+            line-height: 1.5;
         }
         header {
-            background: linear-gradient(135deg. var(--primary). var(--secondary));
-            color: white;
-            padding: 2rem 3rem;
+            background-color: #0b192c;
+            background-image: linear-gradient(135deg, #0b192c 0%, #1e3e62 100%);
+            color: #ffffff;
+            padding: 2rem 2.5rem;
+            border-bottom: 5px solid #ffe600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .header-inner {
+            max-width: 1240px;
+            margin: 0 auto;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
+            gap: 1rem;
         }
-        header h1 { margin: 0; font-size: 1.6rem; }
-        header p { margin: 0.4rem 0 0; opacity: 0.9; font-size: 0.95rem; }
+        header h1 {
+            margin: 0;
+            font-size: 1.65rem;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+        header p {
+            margin: 0.4rem 0 0;
+            color: #cbd5e1;
+            font-size: 0.95rem;
+        }
         .status-pill {
-            background: rgba(0. 166. 80. 0.25);
-            border: 1px solid #4ade80;
-            color: #d1fae5;
-            padding: 0.5rem 1rem;
+            background-color: #065f46;
+            border: 2px solid #34d399;
+            color: #ecfdf5;
+            padding: 0.55rem 1.1rem;
             border-radius: 999px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-size: 0.88rem;
+            font-weight: 700;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
         }
         .container {
-            max-width: 1200px;
+            max-width: 1240px;
             margin: 2rem auto;
             padding: 0 1.5rem;
         }
         .kpi-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit. minmax(220px. 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
             gap: 1.25rem;
             margin-bottom: 2rem;
         }
         .kpi-card {
-            background: var(--card);
-            padding: 1.5rem;
+            background-color: #ffffff;
+            padding: 1.4rem 1.5rem;
             border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0.0.0.0.06);
-            border-left: 4px solid var(--secondary);
+            border: 1px solid #cbd5e1;
+            border-top: 5px solid #1e3e62;
+            box-shadow: 0 4px 6px rgba(15, 23, 42, 0.08);
         }
-        .kpi-card h3 { margin: 0; font-size: 0.85rem; text-transform: uppercase; color: #6b7280; }
-        .kpi-card .value { font-size: 1.6rem; font-weight: 700; color: var(--primary); margin-top: 0.5rem; }
-        .card-panel {
-            background: var(--card);
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0.0.0.0.06);
+        .kpi-card h3 {
+            margin: 0;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #334155;
+            font-weight: 700;
+        }
+        .kpi-card .value {
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-top: 0.45rem;
+        }
+        .kpi-card .sub {
+            font-size: 0.8rem;
+            color: #475569;
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
             margin-bottom: 2rem;
+        }
+        .cap-box {
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 1.2rem 1.5rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(15, 23, 42, 0.12);
+        }
+        .cap-box .cap-label {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffe600;
+        }
+        .cap-box .cap-desc {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+        .cap-box .cap-count {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background-color: #334155;
+            color: #ffffff;
+            padding: 0.35rem 0.85rem;
+            border-radius: 8px;
+        }
+        .card-panel {
+            background-color: #ffffff;
+            padding: 1.75rem;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+        .panel-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            gap: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1rem;
+        }
+        .panel-header h2 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: #0f172a;
+        }
+        .search-input {
+            padding: 0.6rem 1rem;
+            border: 2px solid #94a3b8;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            color: #0f172a;
+            background-color: #f8fafc;
+            min-width: 280px;
+            font-weight: 500;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #1e3e62;
+            background-color: #ffffff;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.9rem;
-        }
-        th. td {
-            padding: 0.85rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.92rem;
         }
         th {
-            background-color: var(--primary);
-            color: white;
-            font-weight: 600;
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 0.95rem 1rem;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.4px;
         }
-        tr:hover { background-color: #f9fafb; }
-        .price { font-weight: 700; color: var(--primary); white-space: nowrap; }
+        td {
+            padding: 0.9rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #cbd5e1;
+            color: #1e293b;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f1f5f9;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        tbody tr:hover {
+            background-color: #dbeafe;
+        }
+        .col-id {
+            font-weight: 700;
+            color: #475569;
+            width: 60px;
+        }
+        .col-title {
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .col-price {
+            white-space: nowrap;
+        }
+        .old-price {
+            font-size: 0.78rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        .curr-price {
+            font-weight: 800;
+            color: #047857;
+            font-size: 1.02rem;
+        }
+        .disc-badge {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            margin-left: 4px;
+        }
         .badge {
-            padding: 0.25rem 0.6rem;
+            display: inline-block;
+            padding: 0.3rem 0.65rem;
             border-radius: 6px;
             font-size: 0.78rem;
-            font-weight: 600;
+            font-weight: 700;
+            white-space: nowrap;
         }
-        .badge.cap { background: #e0f2fe; color: #0369a1; }
-        .badge.ship { background: #dcfce7; color: #15803d; }
-        a { color: var(--secondary); text-decoration: none; font-weight: 600; }
+        .cap-256 {
+            background-color: #1e3a8a;
+            color: #ffffff;
+        }
+        .cap-512 {
+            background-color: #581c87;
+            color: #ffffff;
+        }
+        .cap-1tb {
+            background-color: #9a3412;
+            color: #ffffff;
+        }
+        .cap-other {
+            background-color: #475569;
+            color: #ffffff;
+        }
+        .badge.ship {
+            background-color: #065f46;
+            color: #ffffff;
+        }
+        .btn-link {
+            display: inline-block;
+            background-color: #1e3e62;
+            color: #ffffff;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.82rem;
+            white-space: nowrap;
+            transition: background-color 0.15s;
+        }
+        .btn-link:hover {
+            background-color: #0b192c;
+        }
         footer {
+            background-color: #0f172a;
+            color: #e2e8f0;
             text-align: center;
-            padding: 2rem;
-            color: #6b7280;
-            font-size: 0.85rem;
+            padding: 1.75rem;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: #ffe600;
+            text-decoration: none;
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
     <header>
-        <div>
-            <h1>Monitoreo Automatizado: Apple iPhone 17 Pro Max en Mercado Libre</h1>
-            <p>IU Digital de Antioquia | Evidencia de Aprendizaje 2: Flujo de Trabajo DevOps. Git &amp; CI/CD con GitHub Actions</p>
+        <div class="header-inner">
+            <div>
+                <h1>📱 Monitoreo de Precios: Apple iPhone 17 Pro Max en Mercado Libre</h1>
+                <p>IU Digital de Antioquia &bull; Evidencia de Aprendizaje 1 y 2 (Web Scraping, Git &amp; DevOps CI/CD)</p>
+            </div>
+            <div class="status-pill">&#10004; Pipeline CI/CD Activo &bull; 48 Artículos</div>
         </div>
-        <div class="status-pill">&#9679; CI/CD Pipeline Passing | Release v2.0.0</div>
     </header>
+
     <div class="container">
         <div class="kpi-grid">
             <div class="kpi-card">
-                <h3>Publicaciones Monitoreadas</h3>
-                <div class="value">48 Unidades</div>
+                <h3>Total Publicaciones</h3>
+                <div class="value">48 Celulares</div>
+                <div class="sub">Extraídos de Mercado Libre Colombia</div>
             </div>
             <div class="kpi-card">
-                <h3>Precio Promedio (COP)</h3>
-                <div class="value">$ 4.917.059</div>
+                <h3>Precio Promedio (Media)</h3>
+                <div class="value">$ 4.776.156</div>
+                <div class="sub">Desviación: $ 1.129.410 COP</div>
             </div>
             <div class="kpi-card">
-                <h3>Precio Mediano (COP)</h3>
-                <div class="value">$ 4.624.500</div>
+                <h3>Precio Mediano (50%)</h3>
+                <div class="value">$ 4.600.000</div>
+                <div class="sub">Punto medio del mercado</div>
             </div>
             <div class="kpi-card">
-                <h3>Rango Mín / Máx (COP)</h3>
-                <div class="value" style="font-size: 1.15rem;">$ 2.667.777 - $ 9.999.000</div>
+                <h3>Rango Mínimo / Máximo</h3>
+                <div class="value" style="font-size: 1.2rem;">$ 2.667.777 / $ 7.990.000</div>
+                <div class="sub">Precios reales de venta (COP)</div>
             </div>
         </div>
+
+        <div class="summary-grid">
+            <div class="cap-box">
+                <div>
+                    <div class="cap-label">Capacidad 256 GB</div>
+                    <div class="cap-desc">Promedio: $ 4.589.380 COP</div>
+                </div>
+                <div class="cap-count">35</div>
+            </div>
+            <div class="cap-box">
+                <div>
+                    <div class="cap-label">Capacidad 512 GB</div>
+                    <div class="cap-desc">Promedio: $ 5.223.648 COP</div>
+                </div>
+                <div class="cap-count">8</div>
+            </div>
+            <div class="cap-box">
+                <div>
+                    <div class="cap-label">Capacidad 1 TB</div>
+                    <div class="cap-desc">Promedio: $ 5.990.098 COP</div>
+                </div>
+                <div class="cap-count">1</div>
+            </div>
+        </div>
+
         <div class="card-panel">
-            <h2>Catálogo Verificado por Pipeline CI/CD (Muestra Top 20 de 48 Registros)</h2>
-            <table>
+            <div class="panel-header">
+                <h2>Catálogo Completo Extraído (48 Registros con Precios de Venta y Descuentos)</h2>
+                <input type="text" id="tableFilter" class="search-input" placeholder="🔍 Filtrar por título, capacidad o precio..." onkeyup="filterRows()">
+            </div>
+            <table id="productsTable">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Título de la Publicación</th>
-                        <th>Precio (COP)</th>
+                        <th>Título de la Publicación en Mercado Libre</th>
+                        <th>Precio Actual / Descuento</th>
                         <th>Capacidad</th>
-                        <th>Logística</th>
-                        <th>Enlace</th>
+                        <th>Envío</th>
+                        <th>Publicación</th>
                     </tr>
                 </thead>
                 <tbody>
                     
         <tr>
-            <td>#1</td>
-            <td><strong>Apple iPhone 17 Pro Max (256 GB) - Naranja cósmico - Distribuidor Autorizado</strong></td>
-            <td class="price">$ 6.999.000</td>
-            <td><span class="badge cap">256GB</span></td>
+            <td class="col-id">#1</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 GB) - Naranja cósmico - Distribuidor Autorizado</td>
+            <td class="col-price">
+                <div class="old-price">Antes: <s>$ 6.999.000</s></div>
+                <div class="curr-price">$ 5.685.686 <span class="disc-badge">18% OFF</span></div>
+            </td>
+            <td><span class="badge cap-256">256GB</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb-naranja-cosmico-distribuidor-autorizado/p/MCO1055308620" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb-naranja-cosmico-distribuidor-autorizado/p/MCO1055308620?pdp_filters=item_id:MCO3114162628#wid=MCO3114162628" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#2</td>
-            <td><strong>iPhone 17 Pro Max 256gb Nuevo | Silver Y Deep Blue</strong></td>
-            <td class="price">$ 4.649.000</td>
-            <td><span class="badge cap">256GB</span></td>
+            <td class="col-id">#2</td>
+            <td class="col-title">iPhone 17 Pro Max 256gb Nuevo | Silver Y Deep Blue</td>
+            <td class="col-price"><div class="curr-price">$ 4.649.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://articulo.mercadolibre.com.co/MCO-4462187540-iphone-17-pro-max-256gb-nuevo-silver-y-deep-blue-_JM?searchVariation=207307874749" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://articulo.mercadolibre.com.co/MCO-4462187540-iphone-17-pro-max-256gb-nuevo-silver-y-deep-blue-_JM?searchVariation=207307874749" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#3</td>
-            <td><strong>Apple iPhone 17 Pro Max (512 GB) - Azul profundo</strong></td>
-            <td class="price">$ 9.999.000</td>
-            <td><span class="badge cap">512GB</span></td>
+            <td class="col-id">#3</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (512 GB) - Azul profundo</td>
+            <td class="col-price">
+                <div class="old-price">Antes: <s>$ 9.999.000</s></div>
+                <div class="curr-price">$ 5.699.900 <span class="disc-badge">42% OFF</span></div>
+            </td>
+            <td><span class="badge cap-512">512GB</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-512-gb-azul-profundo/p/MCO55308673" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-512-gb-azul-profundo/p/MCO55308673?pdp_filters=item_id:MCO1706156343#wid=MCO1706156343" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#4</td>
-            <td><strong>Apple iPhone 17 Pro Max (1 TB) - Color plata</strong></td>
-            <td class="price">$ 5.990.098</td>
-            <td><span class="badge cap">1TB</span></td>
+            <td class="col-id">#4</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (1 TB) - Color plata</td>
+            <td class="col-price"><div class="curr-price">$ 5.990.098</div></td>
+            <td><span class="badge cap-1tb">1TB</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-1-tb-color-plata/p/MCO55308695" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-1-tb-color-plata/p/MCO55308695?pdp_filters=item_id:MCO4376997668#wid=MCO4376997668" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#5</td>
-            <td><strong>Apple iPhone 17 Pro Max 256gb Naranja Sim Física</strong></td>
-            <td class="price">$ 4.999.000</td>
-            <td><span class="badge cap">256GB</span></td>
+            <td class="col-id">#5</td>
+            <td class="col-title">Apple iPhone 17 Pro Max 256gb Naranja Sim Física</td>
+            <td class="col-price"><div class="curr-price">$ 4.999.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256gb-naranja-sim-fisica/up/MCOU5251123557" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256gb-naranja-sim-fisica/up/MCOU5251123557?pdp_filters=item_id:MCO2231598447#wid=MCO2231598447" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#6</td>
-            <td><strong>iPhone 17 Pro Max Tres Colores</strong></td>
-            <td class="price">$ 4.998.900</td>
-            <td><span class="badge cap">No especificada</span></td>
+            <td class="col-id">#6</td>
+            <td class="col-title">iPhone 17 Pro Max Tres Colores</td>
+            <td class="col-price"><div class="curr-price">$ 4.998.900</div></td>
+            <td><span class="badge cap-other">No especificada</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://www.mercadolibre.com.co/iphone-17-pro-max-tres-colores/up/MCOU5138535332" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/iphone-17-pro-max-tres-colores/up/MCOU5138535332?pdp_filters=item_id:MCO4423993588#wid=MCO4423993588" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#7</td>
-            <td><strong>Smartphone Esim Azul Apple iPhone 17 Pro Max 256 Gb</strong></td>
-            <td class="price">$ 5.480.559</td>
-            <td><span class="badge cap">256GB</span></td>
+            <td class="col-id">#7</td>
+            <td class="col-title">Smartphone Esim Azul Apple iPhone 17 Pro Max 256 Gb</td>
+            <td class="col-price">
+                <div class="old-price">Antes: <s>$ 5.480.559</s></div>
+                <div class="curr-price">$ 4.329.639 <span class="disc-badge">21% OFF</span></div>
+            </td>
+            <td><span class="badge cap-256">256GB</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://articulo.mercadolibre.com.co/MCO-3608066340-smartphone-esim-azul-apple-iphone-17-pro-max-256-gb-_JM" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://articulo.mercadolibre.com.co/MCO-3608066340-smartphone-esim-azul-apple-iphone-17-pro-max-256-gb-_JM" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#8</td>
-            <td><strong>Apple iPhone 17 Pro Max (256 GB) - Naranja cósmico (Nuevo con caja abierta)</strong></td>
-            <td class="price">$ 4.700.000</td>
-            <td><span class="badge cap">256GB</span></td>
+            <td class="col-id">#8</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 GB) - Naranja cósmico (Nuevo con caja abierta)</td>
+            <td class="col-price"><div class="curr-price">$ 4.700.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb-naranja-cosmico-nuevo-con-caja-abierta/p/MCO2038826944" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb-naranja-cosmico-nuevo-con-caja-abierta/p/MCO2038826944?pdp_filters=item_id:MCO2287904835#wid=MCO2287904835" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#9</td>
-            <td><strong>iPhone 17 Pro Max 512gb Apple Blanco</strong></td>
-            <td class="price">$ 7.550.000</td>
-            <td><span class="badge cap">512GB</span></td>
+            <td class="col-id">#9</td>
+            <td class="col-title">iPhone 17 Pro Max 512gb Apple Blanco</td>
+            <td class="col-price"><div class="curr-price">$ 7.550.000</div></td>
+            <td><span class="badge cap-512">512GB</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://www.mercadolibre.com.co/iphone-17-pro-max-512gb-apple-blanco/p/MCO75011456" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/iphone-17-pro-max-512gb-apple-blanco/p/MCO75011456?pdp_filters=item_id:MCO4147175864#wid=MCO4147175864" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#10</td>
-            <td><strong>Apple iPhone 17 Pro Max (256 Gb) Dual Sim Blanco Plata</strong></td>
-            <td class="price">$ 7.400.000</td>
-            <td><span class="badge cap">256GB</span></td>
+            <td class="col-id">#10</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) Dual Sim Blanco Plata</td>
+            <td class="col-price"><div class="curr-price">$ 7.400.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb-dual-sim-blanco-plata/up/MCOU4195148405" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb-dual-sim-blanco-plata/up/MCOU4195148405?pdp_filters=item_id:MCO4129392616#wid=MCO4129392616" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#11</td>
-            <td><strong>Apple iPhone 17 Pro Max  256gb 12gb Plata</strong></td>
-            <td class="price">$ 6.000.000</td>
-            <td><span class="badge cap">256GB</span></td>
+            <td class="col-id">#11</td>
+            <td class="col-title">Apple iPhone 17 Pro Max  256gb 12gb Plata</td>
+            <td class="col-price"><div class="curr-price">$ 6.000.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max--256gb-12gb-plata/up/MCOU4154267104" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max--256gb-12gb-plata/up/MCOU4154267104?pdp_filters=item_id:MCO1997191941#wid=MCO1997191941" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#12</td>
-            <td><strong>Apple iPhone 17 Pro Max 256 Gb **nuevo**</strong></td>
-            <td class="price">$ 4.600.000</td>
-            <td><span class="badge cap">256GB</span></td>
+            <td class="col-id">#12</td>
+            <td class="col-title">Apple iPhone 17 Pro Max 256 Gb **nuevo**</td>
+            <td class="col-price"><div class="curr-price">$ 4.600.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb-nuevo/up/MCOU4394610606" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb-nuevo/up/MCOU4394610606?pdp_filters=item_id:MCO2054208351#wid=MCO2054208351" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#13</td>
-            <td><strong>Celular Apple iPhone 17 Pro Max Nuevo En Caja Varios Colores</strong></td>
-            <td class="price">$ 4.850.000</td>
-            <td><span class="badge cap">No especificada</span></td>
+            <td class="col-id">#13</td>
+            <td class="col-title">Celular Apple iPhone 17 Pro Max Nuevo En Caja Varios Colores</td>
+            <td class="col-price"><div class="curr-price">$ 4.850.000</div></td>
+            <td><span class="badge cap-other">No especificada</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://articulo.mercadolibre.com.co/MCO-2154919943-celular-apple-iphone-17-pro-max-nuevo-en-caja-varios-colores-_JM?searchVariation=206640463743" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://articulo.mercadolibre.com.co/MCO-2154919943-celular-apple-iphone-17-pro-max-nuevo-en-caja-varios-colores-_JM?searchVariation=206640463743" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#14</td>
-            <td><strong>Apple iPhone 17 Pro Max (256 Gb) - Naranja Cósmico</strong></td>
-            <td class="price">$ 7.990.000</td>
-            <td><span class="badge cap">256GB</span></td>
+            <td class="col-id">#14</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Naranja Cósmico</td>
+            <td class="col-price"><div class="curr-price">$ 7.990.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--naranja-cosmico/up/MCOU3503694534" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--naranja-cosmico/up/MCOU3503694534?pdp_filters=item_id:MCO1703230935#wid=MCO1703230935" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#15</td>
-            <td><strong>Apple iPhone 17 Pro (512 Gb) - Azul Profundo</strong></td>
-            <td class="price">$ 5.900.000</td>
-            <td><span class="badge cap">512GB</span></td>
+            <td class="col-id">#15</td>
+            <td class="col-title">Apple iPhone 17 Pro (512 Gb) - Azul Profundo</td>
+            <td class="col-price"><div class="curr-price">$ 5.900.000</div></td>
+            <td><span class="badge cap-512">512GB</span></td>
             <td><span class="badge ship">Envío Gratis</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-pro-512-gb--azul-profundo/up/MCOU5389802884" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-512-gb--azul-profundo/up/MCOU5389802884?pdp_filters=item_id:MCO4502903744#wid=MCO4502903744" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#16</td>
-            <td><strong>Apple iPhone 17 Pro Max (512 GB) - Naranja cósmico - Excelente (Reacondicionado)</strong></td>
-            <td class="price">$ 2.667.777</td>
-            <td><span class="badge cap">512GB</span></td>
+            <td class="col-id">#16</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (512 GB) - Naranja cósmico - Excelente (Reacondicionado)</td>
+            <td class="col-price"><div class="curr-price">$ 2.667.777</div></td>
+            <td><span class="badge cap-512">512GB</span></td>
             <td><span class="badge ship">Estándar</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-512-gb-naranja-cosmico-excelente-reacondicionado/p/MCO2038832746" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-512-gb-naranja-cosmico-excelente-reacondicionado/p/MCO2038832746" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#17</td>
-            <td><strong>Apple iPhone 17 iPhone 17 Pro Max Yes Silver 256 Gb 12 Gb</strong></td>
-            <td class="price">$ 5.157.541</td>
-            <td><span class="badge cap">256GB</span></td>
+            <td class="col-id">#17</td>
+            <td class="col-title">Apple iPhone 17 iPhone 17 Pro Max Yes Silver 256 Gb 12 Gb</td>
+            <td class="col-price"><div class="curr-price">$ 5.157.541</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
             <td><span class="badge ship">Estándar</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-iphone-17-pro-max-yes-silver-256-gb-12-gb/p/MCO2081491831" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-iphone-17-pro-max-yes-silver-256-gb-12-gb/p/MCO2081491831" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#18</td>
-            <td><strong>Apple iPhone 17 Pro Max (512 Gb) - Silver Turbo Shipping</strong></td>
-            <td class="price">$ 5.882.003</td>
-            <td><span class="badge cap">512GB</span></td>
+            <td class="col-id">#18</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (512 Gb) - Silver Turbo Shipping</td>
+            <td class="col-price"><div class="curr-price">$ 5.882.003</div></td>
+            <td><span class="badge cap-512">512GB</span></td>
             <td><span class="badge ship">Estándar</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-512-gb-silver-turbo-shipping/p/MCO2046891062" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-512-gb-silver-turbo-shipping/p/MCO2046891062" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#19</td>
-            <td><strong>Apple iPhone 17 Pro Max (512 Gb) - Orange Turbo Shipping</strong></td>
-            <td class="price">$ 5.889.501</td>
-            <td><span class="badge cap">512GB</span></td>
+            <td class="col-id">#19</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (512 Gb) - Orange Turbo Shipping</td>
+            <td class="col-price"><div class="curr-price">$ 5.889.501</div></td>
+            <td><span class="badge cap-512">512GB</span></td>
             <td><span class="badge ship">Estándar</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-512-gb-orange-turbo-shipping/p/MCO2045308439" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-512-gb-orange-turbo-shipping/p/MCO2045308439" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
         <tr>
-            <td>#20</td>
-            <td><strong>Apple iPhone 17 Pro Max A3257 - Esim Only - (fully Unlocked) 256gb Deep Blue (grade A)</strong></td>
-            <td class="price">$ 5.157.541</td>
-            <td><span class="badge cap">256GB</span></td>
+            <td class="col-id">#20</td>
+            <td class="col-title">Apple iPhone 17 Pro Max A3257 - Esim Only - (fully Unlocked) 256gb Deep Blue (grade A)</td>
+            <td class="col-price"><div class="curr-price">$ 5.157.541</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
             <td><span class="badge ship">Estándar</span></td>
-            <td><a href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-a3257-esim-only-fully-unlocked-256gb-deep-blue-grade-a/p/MCO2097247036" target="_blank" rel="noopener">Ver en ML &rarr;</a></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-a3257-esim-only-fully-unlocked-256gb-deep-blue-grade-a/p/MCO2097247036" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#21</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 GB) - Color plata - Excelente (Reacondicionado)</td>
+            <td class="col-price"><div class="curr-price">$ 4.559.900</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Estándar</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb-color-plata-excelente-reacondicionado/p/MCO2038826966" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#22</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (2 TB) - Naranja cósmico</td>
+            <td class="col-price"><div class="curr-price">$ 7.000.000</div></td>
+            <td><span class="badge cap-other">No especificada</span></td>
+            <td><span class="badge ship">Estándar</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-2-tb-naranja-cosmico/p/MCO55308735" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#23</td>
+            <td class="col-title">Apple iPhone 17 Pro Max 256 Gb - Color Plata</td>
+            <td class="col-price"><div class="curr-price">$ 4.900.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--color-plata/up/MCOU3898953831?pdp_filters=item_id:MCO3859872994#wid=MCO3859872994" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#24</td>
+            <td class="col-title">Apple iPhone 16 Pro Max (256 Gb) - Color Gris</td>
+            <td class="col-price"><div class="curr-price">$ 3.500.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-16-pro-max-256-gb--color-gris/up/MCOU5195902231?pdp_filters=item_id:MCO4456344390#wid=MCO4456344390" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#25</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Color Plata</td>
+            <td class="col-price"><div class="curr-price">$ 4.500.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--color-plata/up/MCOU4276488568?pdp_filters=item_id:MCO4147154754#wid=MCO4147154754" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#26</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Color Plata</td>
+            <td class="col-price"><div class="curr-price">$ 4.700.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--color-plata/up/MCOU4398442802?pdp_filters=item_id:MCO4203259092#wid=MCO4203259092" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#27</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Color Plata (nuevo)</td>
+            <td class="col-price"><div class="curr-price">$ 5.450.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--color-plata-nuevo/up/MCOU5179757992?pdp_filters=item_id:MCO2200931533#wid=MCO2200931533" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#28</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Naranja Cósmico</td>
+            <td class="col-price"><div class="curr-price">$ 3.800.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--naranja-cosmico/up/MCOU5416110723?pdp_filters=item_id:MCO2270114445#wid=MCO2270114445" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#29</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Naranja Cósmico</td>
+            <td class="col-price"><div class="curr-price">$ 3.800.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--naranja-cosmico/up/MCOU5487274906?pdp_filters=item_id:MCO4528135496#wid=MCO4528135496" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#30</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Color Plata</td>
+            <td class="col-price"><div class="curr-price">$ 3.900.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://articulo.mercadolibre.com.co/MCO-4500687378-apple-iphone-17-pro-max-256-gb-color-plata-_JM?searchVariation=207669841085" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#31</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Naranja Cósmico</td>
+            <td class="col-price"><div class="curr-price">$ 3.800.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--naranja-cosmico/up/MCOU5516452892?pdp_filters=item_id:MCO2283431967#wid=MCO2283431967" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#32</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Color Plata</td>
+            <td class="col-price"><div class="curr-price">$ 4.600.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--color-plata/up/MCOU5389825935?pdp_filters=item_id:MCO2264269773#wid=MCO2264269773" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#33</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Color Plata</td>
+            <td class="col-price"><div class="curr-price">$ 3.800.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--color-plata/up/MCOU5474465725?pdp_filters=item_id:MCO2284128875#wid=MCO2284128875" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#34</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Color Plata</td>
+            <td class="col-price"><div class="curr-price">$ 3.800.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--color-plata/up/MCOU5489335981?pdp_filters=item_id:MCO4540155400#wid=MCO4540155400" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#35</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Color Plata</td>
+            <td class="col-price"><div class="curr-price">$ 3.800.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--color-plata/up/MCOU5535514822?pdp_filters=item_id:MCO4540450436#wid=MCO4540450436" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#36</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Color Plata</td>
+            <td class="col-price"><div class="curr-price">$ 3.800.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--color-plata/up/MCOU5534415608?pdp_filters=item_id:MCO4540157946#wid=MCO4540157946" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#37</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Color Plata</td>
+            <td class="col-price"><div class="curr-price">$ 3.900.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--color-plata/up/MCOU5534788280?pdp_filters=item_id:MCO2287696225#wid=MCO2287696225" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#38</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Naranja Cósmico</td>
+            <td class="col-price"><div class="curr-price">$ 3.700.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--naranja-cosmico/up/MCOU5490911559?pdp_filters=item_id:MCO2287904159#wid=MCO2287904159" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#39</td>
+            <td class="col-title">Apple iPhone 17 Pro (256 Gb) De Segunda 100% Bateria</td>
+            <td class="col-price"><div class="curr-price">$ 4.900.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-256-gb-de-segunda-100-bateria/up/MCOU3960488837?pdp_filters=item_id:MCO3957905190#wid=MCO3957905190" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#40</td>
+            <td class="col-title">iPhone 17 Pro Max (256 Gb) - Naranja Cósmico, Negociable</td>
+            <td class="col-price"><div class="curr-price">$ 4.750.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/iphone-17-pro-max-256-gb--naranja-cosmico-negociable/up/MCOU4004493695?pdp_filters=item_id:MCO4005440508#wid=MCO4005440508" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#41</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256gb) Azul Profundo</td>
+            <td class="col-price"><div class="curr-price">$ 4.500.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256gb-azul-profundo/up/MCOU5388207083?pdp_filters=item_id:MCO2263973335#wid=MCO2263973335" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#42</td>
+            <td class="col-title">iPhone 17 Pro Max  256gb Color Plata  Usado / Excelente</td>
+            <td class="col-price"><div class="curr-price">$ 3.700.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/iphone-17-pro-max--256gb-color-plata--usado--excelente/up/MCOU5492105225?pdp_filters=item_id:MCO2287911195#wid=MCO2287911195" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#43</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) - Naranja Cósmico</td>
+            <td class="col-price"><div class="curr-price">$ 4.000.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb--naranja-cosmico/up/MCOU5454807475?pdp_filters=item_id:MCO4530980810#wid=MCO4530980810" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#44</td>
+            <td class="col-title">iPhone 17 Pro Max 256gb Buen Estado Poco Uso, Detalle Minimo</td>
+            <td class="col-price"><div class="curr-price">$ 3.700.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/iphone-17-pro-max-256gb-buen-estado-poco-uso-detalle-minimo/up/MCOU5210166706?pdp_filters=item_id:MCO2209901425#wid=MCO2209901425" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#45</td>
+            <td class="col-title">17 Pro Max 256 Como Nuevo Batería 100% Cargador Incluido</td>
+            <td class="col-price"><div class="curr-price">$ 3.999.000</div></td>
+            <td><span class="badge cap-other">No especificada</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/17-pro-max-256-como-nuevo-bateria-100-cargador-incluido/up/MCOU5377039613?pdp_filters=item_id:MCO2261964025#wid=MCO2261964025" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#46</td>
+            <td class="col-title">iPhone 17 Pro Max 512gb Nuevo Uso 2 Meses, Detalle Mínimo..</td>
+            <td class="col-price"><div class="curr-price">$ 4.200.000</div></td>
+            <td><span class="badge cap-512">512GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/iphone-17-pro-max-512gb-nuevo-uso-2-meses-detalle-minimo/up/MCOU5328466238?pdp_filters=item_id:MCO2240814041#wid=MCO2240814041" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#47</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (512 Gb) - Naranja Cósmico</td>
+            <td class="col-price"><div class="curr-price">$ 4.000.000</div></td>
+            <td><span class="badge cap-512">512GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://articulo.mercadolibre.com.co/MCO-2253453111-apple-iphone-17-pro-max-512-gb-naranja-cosmico-_JM?searchVariation=207668725021" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
+        </tr>
+        
+        <tr>
+            <td class="col-id">#48</td>
+            <td class="col-title">Apple iPhone 17 Pro Max (256 Gb) Color Plata, Esim + Extras</td>
+            <td class="col-price"><div class="curr-price">$ 4.100.000</div></td>
+            <td><span class="badge cap-256">256GB</span></td>
+            <td><span class="badge ship">Envío Gratis</span></td>
+            <td><a class="btn-link" href="https://www.mercadolibre.com.co/apple-iphone-17-pro-max-256-gb-color-plata-esim--extras/up/MCOU5307918349?pdp_filters=item_id:MCO4491105856#wid=MCO4491105856" target="_blank" rel="noopener">Abrir en ML &rarr;</a></td>
         </tr>
         
                 </tbody>
             </table>
         </div>
     </div>
+
     <footer>
-        Generado y desplegado automáticamente mediante GitHub Actions CI/CD &bull; Endpoint API JSON: <code>docs/api/iphone17_data.json</code>
+        Desplegado automáticamente con <strong>GitHub Actions &amp; GitHub Pages</strong> &bull;
+        Repositorio: <a href="https://github.com/shenao356/mercadolibre-iphone17pm-shenao" target="_blank">shenao356/mercadolibre-iphone17pm-shenao</a> &bull;
+        API JSON: <a href="api/iphone17_data.json" target="_blank">api/iphone17_data.json</a>
     </footer>
+
+    <script>
+        function filterRows() {
+            var input = document.getElementById("tableFilter");
+            var filter = input.value.toLowerCase();
+            var rows = document.querySelectorAll("#productsTable tbody tr");
+            rows.forEach(function(row) {
+                var text = row.innerText.toLowerCase();
+                row.style.display = text.indexOf(filter) > -1 ? "" : "none";
+            });
+        }
+    </script>
 </body>
 </html>
