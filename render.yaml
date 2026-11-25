@@ -1,0 +1,21 @@
+# =============================================================================
+# Configuración Declarativa de Despliegue en la Nube (Render Blueprint - PaaS)
+# Permite desplegar la aplicación web dinámica app.py con un clic desde GitHub
+# =============================================================================
+services:
+  - type: web
+    name: mercadolibre-iphone17pm-web
+    runtime: python
+    branch: main
+    buildCommand: pip install -r requirements.txt && python deploy_dashboard.py
+    startCommand: python app.py
+    healthCheckPath: /api/health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_VERSION
+        value: 3.0.0
+      - key: DEPLOY_TARGET
+        value: Render Cloud PaaS
+      - key: DEBUG_MODE
+        value: "false"
