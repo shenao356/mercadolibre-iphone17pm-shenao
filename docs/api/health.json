@@ -1,0 +1,10 @@
+{
+  "status": "ok",
+  "service": "mercadolibre-iphone17pm-web",
+  "version": "3.0.0",
+  "environment": "production",
+  "deploy_target": "GitHub Pages",
+  "records_loaded": 48,
+  "build_commit_sha": "9294853",
+  "built_at_utc": "2026-11-25 03:30 UTC"
+}

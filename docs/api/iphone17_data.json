@@ -1,8 +1,12 @@
 {
   "metadata": {
     "project": "Mercado Libre Price Intelligence - iPhone 17 Pro Max",
-    "version": "2.2.0",
+    "version": "3.0.0",
     "environment": "production",
+    "deploy_target": "GitHub Pages",
+    "build_commit_sha": "9294853",
+    "build_run_number": "11",
+    "built_at_utc": "2026-11-25 03:30 UTC",
     "total_records": 48,
     "currency": "COP",
     "metrics": {
@@ -10,7 +14,60 @@
       "median_price": 4600000.0,
       "min_price": 2667777,
       "max_price": 7990000,
-      "std_price": 1129409.97
+      "std_price": 1129409.97,
+      "range_price": 5322223,
+      "cv_percent": 23.65,
+      "discount_count": 3,
+      "capacity_summary": [
+        {
+          "capacidad": "256GB",
+          "cantidad": 35,
+          "porcentaje": 72.9,
+          "precio_promedio": 4589380.2,
+          "precio_minimo": 3500000,
+          "precio_maximo": 7990000
+        },
+        {
+          "capacidad": "512GB",
+          "cantidad": 8,
+          "porcentaje": 16.7,
+          "precio_promedio": 5223647.62,
+          "precio_minimo": 2667777,
+          "precio_maximo": 7550000
+        },
+        {
+          "capacidad": "1TB",
+          "cantidad": 1,
+          "porcentaje": 2.1,
+          "precio_promedio": 5990098.0,
+          "precio_minimo": 5990098,
+          "precio_maximo": 5990098
+        },
+        {
+          "capacidad": "No especificada",
+          "cantidad": 4,
+          "porcentaje": 8.3,
+          "precio_promedio": 5211975.0,
+          "precio_minimo": 3999000,
+          "precio_maximo": 7000000
+        }
+      ],
+      "price_distribution": {
+        "labels": [
+          "< 3.5M",
+          "3.5M - 4.5M",
+          "4.5M - 5.5M",
+          "5.5M - 6.5M",
+          "> 6.5M"
+        ],
+        "counts": [
+          2,
+          20,
+          15,
+          7,
+          4
+        ]
+      }
     }
   },
   "data": [
