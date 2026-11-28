@@ -1,6 +1,6 @@
 # =============================================================================
 # PIPELINE CI/CD CON GITHUB ACTIONS - EVIDENCIA DE APRENDIZAJE 3 (EA3)
-# Copia sincronizada de referencia (archivo activo en .github/workflows/ci_cd_pipeline.yml)
+# Copia de referencia sincronizada con .github/workflows/ci_cd_pipeline.yml
 # =============================================================================
 name: Pipeline CI/CD - App Web iPhone 17 Pro Max
 
@@ -62,7 +62,7 @@ jobs:
         run: python -m py_compile scraper_mercadolibre.py app.py deploy_dashboard.py tests/test_scraper.py tests/test_webapp.py
       - name: Verificar archivos obligatorios de infraestructura y despliegue
         run: |
-          for file in .env.example Dockerfile render.yaml requirements.txt README.md; do
+          for file in .env.example Dockerfile render.yaml requirements.txt README.md .github/workflows/ci_cd_pipeline.yml; do
             test -f "$file" && echo "[OK] Verificado: $file" || (echo "[ERROR] Falta: $file" && exit 1)
           done
 
@@ -93,9 +93,13 @@ jobs:
           SERVER_PID=$!
           sleep 2
           curl -fsS http://127.0.0.1:8088/api/health
-          curl -fsS http://127.0.0.1:8088/api/metrics | head -c 350
-          curl -fsS "http://127.0.0.1:8088/api/products?capacidad=512GB" | head -c 350
-          kill $SERVER_PID || true
+          curl -fsS http://127.0.0.1:8088/api/metrics -o /tmp/metrics.json
+          head -c 350 /tmp/metrics.json
+          echo ""
+          curl -fsS "http://127.0.0.1:8088/api/products?capacidad=512GB" -o /tmp/products.json
+          head -c 350 /tmp/products.json
+          echo ""
+          kill $SERVER_PID 2>/dev/null || true
       - name: Publicar datasets validados como artefacto de CI
         uses: actions/upload-artifact@v4
         with:
@@ -145,4 +149,6 @@ jobs:
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://shenao356.github.io/mercadolibre-iphone17pm-shenao/)
           echo "HTTP Status GitHub Pages: $STATUS"
           test "$STATUS" -eq 200
-          curl -fsS https://shenao356.github.io/mercadolibre-iphone17pm-shenao/api/iphone17_data.json | head -c 350
+          curl -fsS https://shenao356.github.io/mercadolibre-iphone17pm-shenao/api/iphone17_data.json -o /tmp/live_data.json
+          head -c 350 /tmp/live_data.json
+          echo ""

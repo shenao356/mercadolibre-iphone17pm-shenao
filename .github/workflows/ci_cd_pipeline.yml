@@ -1,0 +1,154 @@
+# =============================================================================
+# PIPELINE CI/CD CON GITHUB ACTIONS - EVIDENCIA DE APRENDIZAJE 3 (EA3)
+# Flujo activo de integracion continua, pruebas y verificacion de despliegue
+# =============================================================================
+name: Pipeline CI/CD - App Web iPhone 17 Pro Max
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - rama-ea3-despliegue
+  pull_request:
+    branches:
+      - main
+      - develop
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Entorno destino del build (production / staging)'
+        required: false
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  APP_ENV: ${{ inputs.environment || 'production' }}
+  APP_VERSION: '3.0.0'
+  DEPLOY_TARGET: 'GitHub Pages'
+  DATA_PATH: 'iphone_17_pro_max_mercadolibre.csv'
+  OUTPUT_DIR: 'docs'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  lint-and-syntax:
+    name: "1. Revisión de Código, Sintaxis y Configuración"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código fuente del repositorio
+        uses: actions/checkout@v4
+      - name: Configurar Python 3.12 con caché de dependencias
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Instalar dependencias declaradas en requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Compilar y validar sintaxis de todos los módulos Python
+        run: python -m py_compile scraper_mercadolibre.py app.py deploy_dashboard.py tests/test_scraper.py tests/test_webapp.py
+      - name: Verificar archivos obligatorios de infraestructura y despliegue
+        run: |
+          for file in .env.example Dockerfile render.yaml requirements.txt README.md .github/workflows/ci_cd_pipeline.yml; do
+            test -f "$file" && echo "[OK] Verificado: $file" || (echo "[ERROR] Falta: $file" && exit 1)
+          done
+
+  ci-automated-tests:
+    name: "2. Integración Continua (CI) - Pruebas y Smoke Test"
+    needs: lint-and-syntax
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código fuente del repositorio
+        uses: actions/checkout@v4
+      - name: Configurar Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Instalar dependencias del proyecto
+        run: pip install -r requirements.txt
+      - name: Ejecutar pipeline de extracción y resumen estadístico
+        run: python scraper_mercadolibre.py
+      - name: Ejecutar suite completa de 14 pruebas automatizadas (Quality Gate)
+        run: python -m unittest discover -s tests -v
+      - name: Ejecutar Smoke Test HTTP en vivo sobre el servidor web WSGI (app.py)
+        env:
+          HOST: '127.0.0.1'
+          PORT: '8088'
+        run: |
+          python app.py &
+          SERVER_PID=$!
+          sleep 2
+          curl -fsS http://127.0.0.1:8088/api/health
+          curl -fsS http://127.0.0.1:8088/api/metrics -o /tmp/metrics.json
+          head -c 350 /tmp/metrics.json
+          echo ""
+          curl -fsS "http://127.0.0.1:8088/api/products?capacidad=512GB" -o /tmp/products.json
+          head -c 350 /tmp/products.json
+          echo ""
+          kill $SERVER_PID 2>/dev/null || true
+      - name: Publicar datasets validados como artefacto de CI
+        uses: actions/upload-artifact@v4
+        with:
+          name: datos-validados-iphone17-v3
+          path: |
+            iphone_17_pro_max_mercadolibre.csv
+            iphone_17_pro_max_mercadolibre.json
+          retention-days: 30
+
+  cd-build-and-verify:
+    name: "3. Entrega Continua (CD) - Build y Verificación Cloud"
+    needs: ci-automated-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código fuente del repositorio
+        uses: actions/checkout@v4
+      - name: Configurar Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Instalar dependencias del proyecto
+        run: pip install -r requirements.txt
+      - name: Construir aplicación web de producción y endpoints JSON (docs/)
+        env:
+          BUILD_COMMIT_SHA: ${{ github.sha }}
+          BUILD_RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          python deploy_dashboard.py
+          test -f docs/index.html
+          test -f docs/api/iphone17_data.json
+          test -f docs/api/health.json
+          test -f docs/.nojekyll
+      - name: Empaquetar y cargar artefacto web desplegable de producción
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapp-produccion-iphone17-v3
+          path: |
+            docs/index.html
+            docs/api/iphone17_data.json
+            docs/api/health.json
+            docs/.nojekyll
+          retention-days: 30
+      - name: Verificar disponibilidad en vivo del servicio en GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://shenao356.github.io/mercadolibre-iphone17pm-shenao/)
+          echo "HTTP Status GitHub Pages: $STATUS"
+          test "$STATUS" -eq 200
+          curl -fsS https://shenao356.github.io/mercadolibre-iphone17pm-shenao/api/iphone17_data.json -o /tmp/live_data.json
+          head -c 350 /tmp/live_data.json
+          echo ""
