@@ -31,8 +31,11 @@ Este proyecto consolida la evolución completa de una solución de ingeniería d
 
 ```text
 mercadolibre-iphone17pm-shenao/
+├── .github/
+│   └── workflows/
+│       └── ci_cd_pipeline.yml              # Pipeline CI/CD activo en GitHub Actions (3 etapas)
 ├── workflows/
-│   └── ci_cd_pipeline.yml                  # Definición del pipeline CI/CD de GitHub Actions (3 etapas)
+│   └── ci_cd_pipeline.yml                  # Copia sincronizada de referencia del pipeline
 ├── docs/                                   # Paquete web de producción servido por GitHub Pages
 │   ├── .nojekyll                           # Desactiva Jekyll para servir recursos estáticos directo
 │   ├── index.html                          # Aplicación Web SPA (KPIs, Chart.js, filtros, tabla)
@@ -44,7 +47,7 @@ mercadolibre-iphone17pm-shenao/
 │   ├── test_scraper.py                     # 6 pruebas unitarias del scraper DOM, precios y datasets
 │   └── test_webapp.py                      # 8 pruebas de integración HTTP WSGI, API REST y build CD
 ├── app.py                                  # Aplicación web Python WSGI y servidor API REST
-├── scraper_mercadolibre.py                 # Motor de extracción (BeautifulSoup, Selenium, Scrapy)
+├── scraper_mercadolibre.py                 # Motor de extracción (BeautifulSoup y respaldo Selenium)
 ├── deploy_dashboard.py                     # Generador del bundle web SPA y endpoints JSON
 ├── iphone_17_pro_max_mercadolibre.csv      # Dataset tabular validado (48 artículos)
 ├── iphone_17_pro_max_mercadolibre.json     # Dataset JSON estructurado (48 artículos)
@@ -52,6 +55,8 @@ mercadolibre-iphone17pm-shenao/
 ├── Dockerfile                              # Contenedor Python 3.12 Slim listo para la nube
 ├── render.yaml                             # Blueprint declarativo para despliegue PaaS en Render
 ├── requirements.txt                        # Dependencias del proyecto
+├── Morales_Henao_Raul_Santiago_Optimizacion_EA3.pdf   # Informe final en formato PDF (normas APA)
+├── Morales_Henao_Raul_Santiago_Optimizacion_EA3.ipynb # Cuaderno Jupyter ejecutado con evidencias
 ├── .gitignore                              # Exclusiones de entorno local y caché
 └── README.md                               # Documentación integral del proyecto
 ```
@@ -138,7 +143,7 @@ python deploy_dashboard.py
 
 ## 5. Automatización con GitHub Actions (Pipeline CI/CD)
 
-El flujo de trabajo automatizado se encuentra definido y versionado en **`workflows/ci_cd_pipeline.yml`** (listo para activarse en `.github/workflows/ci_cd_pipeline.yml` mediante un token con permiso `workflow` o desde la pestaña *Actions* de GitHub) y opera en conjunto con el workflow gestionado **`pages build and deployment`** de GitHub Actions que despliega automáticamente la carpeta `docs/` tras cada actualización en `main`.
+El flujo de trabajo automatizado se encuentra activo en **`.github/workflows/ci_cd_pipeline.yml`** (con copia sincronizada en `workflows/ci_cd_pipeline.yml`) y opera en conjunto con el workflow gestionado **`pages build and deployment`** de GitHub Actions, que despliega automáticamente la carpeta `docs/` tras cada actualización en `main`.
 
 ### 5.1. Disparadores (*Triggers*) y Control de Concurrencia
 * **`push`** sobre las ramas `main`, `develop` y `rama-ea3-despliegue`.

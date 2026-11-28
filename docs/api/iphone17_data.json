@@ -4,9 +4,9 @@
     "version": "3.0.0",
     "environment": "production",
     "deploy_target": "GitHub Pages",
-    "build_commit_sha": "9294853",
-    "build_run_number": "11",
-    "built_at_utc": "2026-11-25 03:30 UTC",
+    "build_commit_sha": "e363345",
+    "build_run_number": "2",
+    "built_at_utc": "2026-11-28 02:17 UTC",
     "total_records": 48,
     "currency": "COP",
     "metrics": {
