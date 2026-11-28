@@ -184,8 +184,11 @@ Para escenarios que requieran ejecución dinámica del backend Python (`app.py`)
 #### Catálogo Interactivo, Filtros y Gráficas Analíticas en la Nube
 ![Gráficas y Catálogo Interactivo](docs/screenshots/02_webapp_graficas_catalogo.png)
 
-#### Ejecuciones Exitosas en GitHub Actions (CI/CD y GitHub Pages)
-![GitHub Actions Pipeline](docs/screenshots/03_github_actions_runs.png)
+#### Ejecución Exitosa del Pipeline CI/CD de 3 Etapas en GitHub Actions (`ci_cd_pipeline.yml`)
+![Diagrama de 3 Etapas CI/CD en GitHub Actions](docs/screenshots/03b_github_actions_pipeline.png)
+
+#### Historial de Workflows en GitHub Actions (`Pipeline CI/CD` y `pages build and deployment`)
+![GitHub Actions Runs](docs/screenshots/03_github_actions_runs.png)
 
 #### Endpoint API JSON en Producción (`api/iphone17_data.json` y `api/health.json`)
 ![Endpoint API JSON en Producción](docs/screenshots/04_api_json_produccion.png)
