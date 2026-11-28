@@ -4,10 +4,10 @@ ACTIVIDAD: Evidencia de Aprendizaje 1 y 2 - Extracción de Datos y DevOps
 CASO DE ESTUDIO: Extracción de datos de 'iPhone 17 Pro Max' en Mercado Libre
 REPOSITORIO: https://github.com/shenao356/mercadolibre-iphone17pm-shenao
 =============================================================================
-Este script implementa las 3 metodologías de Web Scraping del curso:
-1. BeautifulSoup (con requests y parseo del DOM HTML)
-2. Selenium WebDriver (emulación de navegador dinámico)
-3. Scrapy (arquitectura de spiders asíncronos)
+En la Unidad 1 se compararon las 3 metodologías de Web Scraping del curso
+(BeautifulSoup, Selenium WebDriver y Scrapy). Este script productivo implementa:
+1. BeautifulSoup (parseo determinista del DOM HTML para el pipeline CI/CD)
+2. Selenium WebDriver (respaldo de navegación dinámica en navegador headless)
 =============================================================================
 """
 
